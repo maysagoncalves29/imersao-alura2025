@@ -156,7 +156,7 @@ Desenvolvedora .NET em formação | Apaixonada por tecnologia com propósito
 
 GitHub: @maysagoncalves29
 
-<a href="linkedin.com/in/maysagoncalves">LinkedIn</a>
+<a href="https://www.linkedin.com/in/maysa-goncalves/">LinkedIn</a>
 
 ---
 ## Licença
