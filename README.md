@@ -8,8 +8,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/suapasta/incluiAI-frontend"><strong>App Flutter</strong></a> ·
-  <a href="https://github.com/suapasta/incluiAI-backend"><strong>API .NET</strong></a> ·
+  <a href="https://github.com/maysagoncalves29/imersao-alura2025/tree/master/imersao-frontend/digitaliza_ia"><strong>App Flutter</strong></a> ·
+  <a href="https://github.com/maysagoncalves29/imersao-alura2025/tree/master/imersao-backend/WebApplication1"><strong>API .NET</strong></a> ·
 </p>
 
 ---
@@ -115,7 +115,7 @@ A aplicação estará disponível em: `https://localhost:7064`
 1. Acesse a pasta:
 
 ```bash
-cd frontend/inclui_ai
+cd frontend/digitaliza_ia
 ```
 
 2. Execute o app em um emulador ou dispositivo:
@@ -128,9 +128,13 @@ flutter run
 
 ## 🌱 Próximos Passos
 ✅ Comunicação entre front e back
+
 🔊 Leitura das dicas por voz (TTS)
+
 🎙️ Entrada de voz com reconhecimento de fala
+
 🧠 Geração de imagens ilustrativas via IA
+
 🧪 Testes com idosos e familiares
 
 ## 💡 Visão de Futuro
@@ -140,7 +144,6 @@ A inclusão digital deve ser uma prioridade. Esse é só o começo.
 
 ## Diferenciais
 
-* Testado com pessoas reais (incluindo minha avó ❤️)
 * Linguagem simples, inclusiva e acessível
 * Gerador inteligente de dicas baseado em IA
 
@@ -153,7 +156,7 @@ Desenvolvedora .NET em formação | Apaixonada por tecnologia com propósito
 
 GitHub: @maysagoncalves29
 
-LinkedIn: linkedin.com/in/maysagoncalves
+<a href="linkedin.com/in/maysagoncalves">LinkedIn</a>
 
 ---
 ## Licença
@@ -163,7 +166,6 @@ Este projeto está sob a licença MIT. Sinta-se à vontade para contribuir, adap
 ## Créditos
 
 Logo criado com [Canva](https://www.canva.com).
-Fotos e vetores: 
 
 ---
 
