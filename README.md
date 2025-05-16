@@ -10,6 +10,7 @@
 <p align="center">
   <a href="https://github.com/maysagoncalves29/imersao-alura2025/tree/master/imersao-frontend/digitaliza_ia"><strong>App Flutter</strong></a> ·
   <a href="https://github.com/maysagoncalves29/imersao-alura2025/tree/master/imersao-backend/WebApplication1"><strong>API .NET</strong></a> ·
+   <a href="https://github.com/maysagoncalves29/imersao-alura2025/blob/master/IncluiAI.ipynb"><strong>Google Colab</strong></a>
 </p>
 
 ---
