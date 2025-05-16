@@ -1,0 +1,30 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.dbmdl
+*.sdf
+*.sln.docstates
+
+# Build e binários
+bin/
+obj/
+*.exe
+*.dll
+*.log
+
+# Configuração local
+Properties/launchSettings.json
+appsettings.json
+
+# Front-end Flutter (futuramente)
+.flutter-plugins
+.dart_tool/
+.packages
+build/
+*.flutter-plugins
+pubspec.lock
+
+# Outros
+*.cache
+*.tmp

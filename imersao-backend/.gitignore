@@ -1,0 +1,15 @@
+.vs/
+
+*.user
+
+*.suo
+
+bin/
+
+obj/
+
+*.log
+
+*.cache
+
+
