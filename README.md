@@ -75,6 +75,25 @@ Veja abaixo um exemplo real de uso do endpoint de geração de dica com IA:
 ![image](https://github.com/user-attachments/assets/4a681768-cd33-4f3f-8231-dff25704ba22)
 
 ---
+
+### 📬 Exemplo de chamada via Python (Google Colab)
+
+```python
+import requests
+
+url = "http://localhost:<sua-porta>/api/ia/gerar-dica"
+entrada = {
+    "texto": "mandar um áudio no WhatsApp",
+    "acessivel": True,
+    "estilo": "detalhado"
+}
+
+response = requests.post(url, json=entrada)
+print(response.json())
+```
+
+---
+
 ## 🧠 Como Funciona
 
 1. O usuário **digita ou fala** uma dúvida (ex: “como mandar áudio no WhatsApp?”)
