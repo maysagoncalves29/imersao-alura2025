@@ -41,7 +41,8 @@ Pensando nisso, aproveitei a imersão da Alura e decidi desenvolver um app simpl
 As cores e o design foram escolhidos com foco na **acessibilidade visual**. O layout possui **alto contraste**, **tipografia ampliada** e **componentes bem espaçados**, pensando em pessoas como minha avó ❤️
 
 <p align="center">
- <img width="60%" alt="android-image" src="https://github.com/user-attachments/assets/99673fa3-3d54-44b3-9ed4-41250c1062ce" />
+<img width="218" alt="inclui-ia(1)" src="https://github.com/user-attachments/assets/dc9ab92d-6f3f-460f-85a7-01c6fb593923" />
+<img width="218" alt="inclui-ia(2)" src="https://github.com/user-attachments/assets/4003fa28-505e-40df-be30-fbbd2fcd2f63" />
 </p>
 
 ---
