@@ -160,8 +160,6 @@ flutter run
 ## 🌱 Próximos Passos
 ✅ Comunicação entre front e back
 
-🔊 Leitura das dicas por voz (TTS)
-
 🎙️ Entrada de voz com reconhecimento de fala
 
 🧠 Geração de imagens ilustrativas via IA
