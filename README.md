@@ -10,7 +10,7 @@
 <p align="center">
   <a href="https://github.com/maysagoncalves29/imersao-alura2025/tree/master/imersao-frontend/digitaliza_ia"><strong>App Flutter</strong></a> ·
   <a href="https://github.com/maysagoncalves29/imersao-alura2025/tree/master/imersao-backend/WebApplication1"><strong>API .NET</strong></a> ·
-   <a href="https://github.com/maysagoncalves29/imersao-alura2025/blob/master/IncluiAI.ipynb"><strong>Google Colab</strong></a>
+   <a href="https://maysas-organization.gitbook.io/maysas-organization-docs"><strong>Documentação Simples</strong></a>
 </p>
 
 ---
@@ -38,10 +38,19 @@ Pensando nisso, aproveitei a imersão da Alura e decidi desenvolver um app simpl
 ---
 ## 🎨 Cores e Layout
 
-As cores e o design foram escolhidos com foco na **acessibilidade visual**. O layout possui **alto contraste**, **tipografia ampliada** e **componentes bem espaçados**, pensando em pessoas como minha avó ❤️
+As cores e o design foram escolhidos com foco na acessibilidade visual:
+
+- Alto contraste: Fundo preto com textos e botões em amarelo para facilitar a visualização
+- Botões grandes e bem espaçados: Facilitando o clique para pessoas com coordenação motora reduzida
+- Opções de A+ e A-: Controle de tamanho da fonte visível na interface
+- Microfone integrado: Entrada por voz para quem tem dificuldade de digitar
+- Botão de acessibilidade: Ícone visível no canto inferior direito da tela
+- Checkbox de "Resposta acessível": Para garantir conteúdo adaptado
 
 <p align="center">
- <img width="60%" alt="android-image" src="https://github.com/user-attachments/assets/99673fa3-3d54-44b3-9ed4-41250c1062ce" />
+<img width="218" alt="inclui-ia(1)" src="https://github.com/user-attachments/assets/dc9ab92d-6f3f-460f-85a7-01c6fb593923" />
+<img width="218" alt="inclui-ia(2)" src="https://github.com/user-attachments/assets/4003fa28-505e-40df-be30-fbbd2fcd2f63" />
+<img width="960" alt="versaoweb" src="https://github.com/user-attachments/assets/4aeab034-dad5-4727-b80b-95da8fd8fefd" />
 </p>
 
 ---
@@ -61,10 +70,13 @@ Milhões de brasileiros acima de 60 anos enfrentam barreiras para acessar servi�
 
 ### Frontend (Flutter)
 
-- Interface com contraste alto e botões grandes
+- Interface com contraste alto (fundo preto e elementos amarelos)
+- Botões grandes e bem espaçados
+- Sugestões rápidas pré-definidas
 - Suporte à leitura por voz (TTS)
-- Requisições HTTP para o back-end
-- Reconhecimento de fala (em desenvolvimento)
+- Funcionalidade de acessibilidade integrada
+- Reconhecimento de fala (microfone visível na interface) - (Em desenvolvimento)
+- Seção de emergência com acesso a contatos importantes (Hospitais, Delegacias, Abrigos)
 
 ---
 
@@ -149,8 +161,6 @@ flutter run
 ## 🌱 Próximos Passos
 ✅ Comunicação entre front e back
 
-🔊 Leitura das dicas por voz (TTS)
-
 🎙️ Entrada de voz com reconhecimento de fala
 
 🧠 Geração de imagens ilustrativas via IA
@@ -165,7 +175,26 @@ A inclusão digital deve ser uma prioridade. Esse é só o começo.
 ## Diferenciais
 
 * Linguagem simples, inclusiva e acessível
+* Interface com alto contraste e elementos grandes
+* Controle de tamanho de fonte integrado
+* Suporte a entrada por voz
+* Sugestões rápidas para dúvidas comuns
+* Acesso rápido a contatos de emergência
 * Gerador inteligente de dicas baseado em IA
+
+---
+
+## 🧭 Futuro do Projeto
+
+Em versões futuras, este projeto pretende ir além das respostas geradas por IA. Entre as funcionalidades planejadas estão:
+
+⏰ Lembretes inteligentes para tomar remédios e se hidratar, com notificações em horários programados.
+
+🧘‍♀️ Orientações práticas para exercícios físicos simples e seguros, adaptados para o dia a dia de pessoas idosas.
+
+🤝 Companhia virtual, oferecendo interações leves e motivacionais para reduzir o isolamento social e promover o bem-estar emocional.
+
+Esses recursos terão como foco a acessibilidade digital real, promovendo autonomia, saúde e inclusão por meio da tecnologia.
 
 ---
 
