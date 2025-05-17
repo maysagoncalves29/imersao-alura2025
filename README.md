@@ -169,6 +169,20 @@ A inclusão digital deve ser uma prioridade. Esse é só o começo.
 
 ---
 
+## 🧭 Futuro do Projeto
+
+Em versões futuras, este projeto pretende ir além das respostas geradas por IA. Entre as funcionalidades planejadas estão:
+
+⏰ Lembretes inteligentes para tomar remédios e se hidratar, com notificações em horários programados.
+
+🧘‍♀️ Orientações práticas para exercícios físicos simples e seguros, adaptados para o dia a dia de pessoas idosas.
+
+🤝 Companhia virtual, oferecendo interações leves e motivacionais para reduzir o isolamento social e promover o bem-estar emocional.
+
+Esses recursos terão como foco a acessibilidade digital real, promovendo autonomia, saúde e inclusão por meio da tecnologia.
+
+---
+
 ## 👩‍💻 Desenvolvido por
 Maysa Gonçalves
 
