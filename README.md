@@ -38,7 +38,14 @@ Pensando nisso, aproveitei a imersão da Alura e decidi desenvolver um app simpl
 ---
 ## 🎨 Cores e Layout
 
-As cores e o design foram escolhidos com foco na **acessibilidade visual**. O layout possui **alto contraste**, **tipografia ampliada** e **componentes bem espaçados**, pensando em pessoas como minha avó ❤️
+As cores e o design foram escolhidos com foco na acessibilidade visual:
+
+- Alto contraste: Fundo preto com textos e botões em amarelo para facilitar a visualização
+- Botões grandes e bem espaçados: Facilitando o clique para pessoas com coordenação motora reduzida
+- Opções de A+ e A-: Controle de tamanho da fonte visível na interface
+- Microfone integrado: Entrada por voz para quem tem dificuldade de digitar
+- Botão de acessibilidade: Ícone visível no canto inferior direito da tela
+- Checkbox de "Resposta acessível": Para garantir conteúdo adaptado
 
 <p align="center">
 <img width="218" alt="inclui-ia(1)" src="https://github.com/user-attachments/assets/dc9ab92d-6f3f-460f-85a7-01c6fb593923" />
@@ -62,10 +69,13 @@ Milhões de brasileiros acima de 60 anos enfrentam barreiras para acessar servi�
 
 ### Frontend (Flutter)
 
-- Interface com contraste alto e botões grandes
+- Interface com contraste alto (fundo preto e elementos amarelos)
+- Botões grandes e bem espaçados
+- Sugestões rápidas pré-definidas
 - Suporte à leitura por voz (TTS)
-- Requisições HTTP para o back-end
-- Reconhecimento de fala (em desenvolvimento)
+- Funcionalidade de acessibilidade integrada
+- Reconhecimento de fala (microfone visível na interface) - (Em desenvolvimento)
+- Seção de emergência com acesso a contatos importantes (Hospitais, Delegacias, Abrigos)
 
 ---
 
