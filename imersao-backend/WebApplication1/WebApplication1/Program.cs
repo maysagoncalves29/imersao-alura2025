@@ -51,14 +51,28 @@ app.MapPost("/api/ia/gerar-dica", async ([FromBody] EntradaModel entrada, IConfi
         return Results.Problem("A chave da API Gemini não foi configurada.");
     }
 
-    string estilo = entrada.Estilo?.ToLowerInvariant().Trim() ?? "simples";
+    string texto = entrada.Texto?.ToLowerInvariant().Trim() ?? "";
+    string promptBase;
 
-    string promptBase = $"Explique de forma clara, simples e gentil como ajudar uma pessoa idosa que tem dificuldade em: {entrada.Texto}.";
+    if (texto.Contains("beber água"))
+    {
+        promptBase = "Explique de forma clara e gentil para uma pessoa idosa por que é importante beber água regularmente, incluindo dicas simples para lembrar de se hidratar.";
+    }
+    else if (texto.Contains("exercício físico"))
+    {
+        promptBase = "Dê dicas de exercícios físicos simples para uma pessoa idosa fazer em casa, com cuidado e sempre recomendando que consulte um médico antes de começar.";
+    }
+    else
+    {
+        promptBase = $"Explique de forma clara, simples e gentil como ajudar uma pessoa idosa que tem dificuldade em: {entrada.Texto}.";
+    }
 
     if (entrada.Acessivel)
     {
         promptBase += " Responda de forma ainda mais simples, sem usar nomes próprios, e com explicações que sejam acessíveis para pessoas com baixa visão ou pouca familiaridade com tecnologia.";
     }
+
+    string estilo = entrada.Estilo?.ToLowerInvariant().Trim() ?? "simples";
 
     string estiloExtra = estilo switch
     {
@@ -86,7 +100,6 @@ app.MapPost("/api/ia/gerar-dica", async ([FromBody] EntradaModel entrada, IConfi
         });
         logger.LogInformation($"Request Body para Gemini: {requestBody}");
 
-        // Atualização da URL para usar o modelo gemini-2.0-flash-001
         var response = await client.PostAsync("models/gemini-2.0-flash-001:generateContent", new StringContent(requestBody, Encoding.UTF8, "application/json"));
 
         if (!response.IsSuccessStatusCode)
@@ -99,36 +112,23 @@ app.MapPost("/api/ia/gerar-dica", async ([FromBody] EntradaModel entrada, IConfi
         var resultJson = await response.Content.ReadAsStringAsync();
         logger.LogInformation($"Resposta da Gemini: {resultJson}");
 
-        try
+        var respostaGemini = JsonDocument.Parse(resultJson);
+        var dicaElement = respostaGemini.RootElement.GetProperty("candidates")[0].GetProperty("content").GetProperty("parts")[0];
+        if (dicaElement.TryGetProperty("text", out var dicaProperty))
         {
-            var respostaGemini = JsonDocument.Parse(resultJson);
-            var dicaElement = respostaGemini.RootElement.GetProperty("candidates")[0].GetProperty("content").GetProperty("parts")[0];
-            if (dicaElement.TryGetProperty("text", out var dicaProperty))
-            {
-                var dica = dicaProperty.GetString();
-                return Results.Ok(new { resposta = dica });
-            }
-            else
-            {
-                logger.LogError($"Estrutura da resposta da Gemini inesperada: 'text' não encontrado.");
-                return Results.Problem("Estrutura da resposta da Gemini inesperada.");
-            }
+            var dica = dicaProperty.GetString();
+            return Results.Ok(new { resposta = dica });
         }
-        catch (JsonException ex)
+        else
         {
-            logger.LogError($"Erro ao deserializar a resposta da Gemini: {ex.Message}, Json: {resultJson}");
-            return Results.Problem($"Erro ao processar a resposta da Gemini: {ex.Message}");
+            logger.LogError($"Estrutura da resposta da Gemini inesperada: 'text' não encontrado.");
+            return Results.Problem("Estrutura da resposta da Gemini inesperada.");
         }
-    }
-    catch (HttpRequestException ex)
-    {
-        logger.LogError($"Erro de requisição HTTP para a API Gemini: {ex.Message}");
-        return Results.Problem($"Erro de comunicação com a API Gemini: {ex.Message}");
     }
     catch (Exception ex)
     {
-        logger.LogError($"Erro inesperado ao chamar a API Gemini: {ex.Message}");
-        return Results.Problem($"Erro inesperado ao chamar a API Gemini: {ex.Message}");
+        logger.LogError($"Erro ao chamar a API Gemini: {ex.Message}");
+        return Results.Problem($"Erro ao chamar a API Gemini: {ex.Message}");
     }
 });
 

@@ -5,6 +5,7 @@ import 'dart:convert';
 // Pacotes para voz
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart';
+import 'dart:async';
 
 void main() {
   runApp(IncluiAIApp());
@@ -15,31 +16,30 @@ class IncluiAIApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-  brightness: Brightness.dark,
-  primaryColor: Colors.black,
-  scaffoldBackgroundColor: Colors.black,
-  textTheme: TextTheme(
-    bodyLarge: TextStyle(fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold),
-    bodyMedium: TextStyle(fontSize: 22, color: Colors.white),
-    labelLarge: TextStyle(fontSize: 20, color: Colors.white),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.amber, // cor vibrante para botão
-      foregroundColor: Colors.black, // texto preto no botão amarelo
-      textStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    ),
-  ),
-  inputDecorationTheme: InputDecorationTheme(
-    filled: true,
-    fillColor: Colors.grey[900], // fundo escuro do campo
-    hintStyle: TextStyle(color: Colors.grey[400], fontSize: 20),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-  ),
-),
-
+        brightness: Brightness.dark,
+        primaryColor: Colors.black,
+        scaffoldBackgroundColor: Colors.black,
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold),
+          bodyMedium: TextStyle(fontSize: 22, color: Colors.white),
+          labelLarge: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.amber,
+            foregroundColor: Colors.black,
+            textStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey[900],
+          hintStyle: TextStyle(color: Colors.grey[300], fontSize: 20),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      ),
       home: IncluiAIHome(),
     );
   }
@@ -60,7 +60,6 @@ class _IncluiAIHomeState extends State<IncluiAIHome> {
 
   final FlutterTts _flutterTts = FlutterTts();
 
-  // Novo: variável para controlar se a resposta deve ser acessível
   bool _acessivel = false;
 
   final List<String> palavrasChave = [
@@ -70,19 +69,34 @@ class _IncluiAIHomeState extends State<IncluiAIHome> {
     'Onde fica o botão da câmera?',
     'Como faço para tirar uma foto?',
     'Como faço para enviar uma mensagem?',
+    'Me lembre de beber água',
+    'Sugira um exercício físico simples'
   ];
+
+  Timer? _lembreteAgua;
+  Timer? _lembreteExercicio;
 
   @override
   void initState() {
     super.initState();
     _speech = stt.SpeechToText();
     _initTts();
+    _iniciarLembretes();
   }
 
   Future<void> _initTts() async {
     await _flutterTts.setLanguage('pt-BR');
     await _flutterTts.setSpeechRate(0.4);
     await _flutterTts.setVolume(1.0);
+  }
+
+  void _iniciarLembretes() {
+    _lembreteAgua = Timer.periodic(Duration(hours: 2), (timer) async {
+      await _falarResposta('Hora de beber água! Manter-se hidratado é muito importante.');
+    });
+    _lembreteExercicio = Timer.periodic(Duration(hours: 4), (timer) async {
+      await _falarResposta('Lembre-se de se alongar ou fazer um exercício leve. Que tal levantar e dar alguns passos? Sempre com acompanhamento profissional.');
+    });
   }
 
   Future<void> _gerarDica() async {
@@ -97,7 +111,7 @@ class _IncluiAIHomeState extends State<IncluiAIHome> {
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'texto': texto,
-        'acessivel': _acessivel, // Envia o campo acessível aqui
+        'acessivel': _acessivel,
       }),
     );
 
@@ -114,10 +128,9 @@ class _IncluiAIHomeState extends State<IncluiAIHome> {
   }
 
   Future<void> _falarResposta(String texto) async {
-    String textoLimpo = texto.replaceAll('*', ''); // remove todos os asteriscos
+    String textoLimpo = texto.replaceAll('*', '');
     await _flutterTts.stop();
     await _flutterTts.speak(textoLimpo);
-    
   }
 
   void _startListening() async {
@@ -157,143 +170,178 @@ class _IncluiAIHomeState extends State<IncluiAIHome> {
   }
 
   @override
+  void dispose() {
+    _lembreteAgua?.cancel();
+    _lembreteExercicio?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textStyle = theme.textTheme.bodyLarge!;
     final buttonTextStyle = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
 
     return Scaffold(
-  appBar: PreferredSize(
-  preferredSize: Size.fromHeight(80),
-  child: Container(
-    color: Colors.black,
-    padding: EdgeInsets.only(top: 24),
-    child: Center(
-      child: Image.asset(
-        'assets/logonovaia.png',
-        height: 40,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: Container(
+          color: Colors.black,
+          padding: EdgeInsets.only(top: 24),
+          child: Center(
+            child: Image.asset(
+              'assets/logonovaia.png',
+              height: 40,
+            ),
+          ),
+        ),
       ),
-    ),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text('Como posso te ajudar?', style: textStyle),
+              SizedBox(height: 8),
+              TextField(
+                controller: _controller,
+                style: TextStyle(fontSize: 24, color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: 'Digite ou fale sua dificuldade aqui...',
+                  hintStyle: TextStyle(color: Colors.grey[400], fontSize: 20),
+                  filled: true,
+                  fillColor: Colors.black87,
+                  border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(_escutando ? Icons.mic : Icons.mic_none, color: Colors.white, size: 30),
+                    onPressed: _escutando ? null : _startListening,
+                  ),
+                ),
+                maxLines: 2,
+              ),
+              SizedBox(height: 12),
+              Row(
+                children: [
+                  Checkbox(
+                    value: _acessivel,
+                    onChanged: (bool? valor) {
+                      setState(() {
+                        _acessivel = valor ?? false;
+                      });
+                    },
+                    activeColor: Colors.amber,
+                  ),
+                  Text('Resposta acessível', style: TextStyle(fontSize: 20, color: Colors.white)),
+                ],
+              ),
+              SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Sugestões rápidas:', style: theme.textTheme.bodyMedium!.copyWith(fontSize: 20)),
+              ),
+              Wrap(
+  spacing: 8,
+  runSpacing: 8,
+  children: palavrasChave.map((palavra) {
+    return ElevatedButton(
+      onPressed: () => _usarPalavraChave(palavra),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blueGrey,
+        foregroundColor: Colors.white, // reforça contraste do texto
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      child: Text(palavra, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+    );
+  }).toList(),
+),
+
+              SizedBox(height: 20),
+Align(
+  alignment: Alignment.centerLeft,
+  child: Text('Cuidados com a saúde:', style: theme.textTheme.bodyMedium!.copyWith(fontSize: 20)),
+),
+Wrap(
+  spacing: 8,
+  runSpacing: 8,
+  children: [
+    ElevatedButton.icon(
+  onPressed: () => _usarPalavraChave('Me lembre de beber água e explique por que isso é importante.'),
+  icon: Icon(Icons.local_drink, color: Colors.white),
+  label: Text('Beber água', style: TextStyle(fontSize: 18, color: Colors.black)),
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Color.fromARGB(255, 241, 245, 2),
   ),
 ),
-  body: Padding(
-    padding: EdgeInsets.all(16),
-    child: SingleChildScrollView(
-      child: Column(
-        children: [
-          Text('Como posso te ajudar?', style: textStyle),
-          SizedBox(height: 8),
-          TextField(
-            controller: _controller,
-            style: TextStyle(fontSize: 24, color: Colors.white),
-            decoration: InputDecoration(
-              hintText: 'Digite ou fale sua dificuldade aqui...',
-              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 20),
-              filled: true,
-              fillColor: Colors.black87,
-              border: OutlineInputBorder(),
-              suffixIcon: IconButton(
-                icon: Icon(_escutando ? Icons.mic : Icons.mic_none, color: Colors.white, size: 30),
-                onPressed: _escutando ? null : _startListening,
-              ),
-            ),
-            maxLines: 2,
-          ),
 
-          SizedBox(height: 12),
-          Row(
-            children: [
-              Checkbox(
-                value: _acessivel,
-                onChanged: (bool? valor) {
-                  setState(() {
-                    _acessivel = valor ?? false;
-                  });
-                },
-                activeColor: Colors.amber,
+ElevatedButton.icon(
+  onPressed: () => _usarPalavraChave('Me dê dicas de exercícios físicos simples para fazer em casa. Lembre que preciso de orientação médica.'),
+  icon: Icon(Icons.fitness_center, color: Colors.white),
+  label: Text('Exercício físico', style: TextStyle(fontSize: 18, color: Colors.black)),
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Color.fromARGB(255, 241, 245, 2),
+  ),
+),
+  ]
+),
+
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _carregando ? null : _gerarDica,
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 70),
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: _carregando
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : Text('Gerar dica', style: buttonTextStyle),
               ),
-              Text('Resposta acessível', style: TextStyle(fontSize: 20, color: Colors.white)),
+              SizedBox(height: 20),
+              if (_resposta.isNotEmpty) ...[
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text('Dica personalizada:\n$_resposta', style: textStyle),
+                ),
+                SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () => _falarResposta(_resposta),
+                        icon: Icon(Icons.volume_up),
+                        label: Text('Repetir', style: buttonTextStyle),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(150, 50),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          await _flutterTts.stop();
+                          setState(() {
+                            _controller.clear();
+                            _resposta = '';
+                          });
+                        },
+                        icon: Icon(Icons.clear),
+                        label: Text('Limpar', style: buttonTextStyle),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(150, 50),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ]
             ],
           ),
-
-          SizedBox(height: 12),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Sugestões rápidas:', style: theme.textTheme.bodyMedium!.copyWith(fontSize: 20)),
-          ),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: palavrasChave.map((palavra) {
-              return ElevatedButton(
-                onPressed: () => _usarPalavraChave(palavra),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueGrey,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
-                child: Text(palavra, style: TextStyle(fontSize: 18)),
-              );
-            }).toList(),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _carregando ? null : _gerarDica,
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(double.infinity, 70),
-              padding: EdgeInsets.symmetric(vertical: 16),
-            ),
-            child: _carregando
-                ? CircularProgressIndicator(color: Colors.white)
-                : Text('Gerar dica', style: buttonTextStyle),
-          ),
-          SizedBox(height: 20),
-          if (_resposta.isNotEmpty) ...[
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.black87,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text('Dica personalizada:\n$_resposta', style: textStyle),
-            ),
-            SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () => _falarResposta(_resposta),
-                    icon: Icon(Icons.volume_up),
-                    label: Text('Repetir', style: buttonTextStyle),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(150, 50),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton.icon(
-                  onPressed: () async {
-                    await _flutterTts.stop(); // Interrompe a fala
-                    setState(() {
-                      _controller.clear();
-                      _resposta = '';
-                    });
-                  },
-                  icon: Icon(Icons.clear),
-                  label: Text('Limpar', style: buttonTextStyle),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(150, 50),
-                  ),
-                ),
-              ),
-              ],
-            )
-          ]
-        ],
+        ),
       ),
-    ),
-  ),
-);
-
+    );
   }
 }
