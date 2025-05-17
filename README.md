@@ -174,6 +174,11 @@ A inclusão digital deve ser uma prioridade. Esse é só o começo.
 ## Diferenciais
 
 * Linguagem simples, inclusiva e acessível
+* Interface com alto contraste e elementos grandes
+* Controle de tamanho de fonte integrado
+* Suporte a entrada por voz
+* Sugestões rápidas para dúvidas comuns
+* Acesso rápido a contatos de emergência
 * Gerador inteligente de dicas baseado em IA
 
 ---
