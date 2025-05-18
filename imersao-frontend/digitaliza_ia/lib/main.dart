@@ -7,12 +7,33 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+Future<void> _initNotificacoes() async {
+  const AndroidInitializationSettings androidSettings =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  const InitializationSettings settings = InitializationSettings(
+    android: androidSettings,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(settings);
+
+  tz.initializeTimeZones(); // Necessário para agendamento com horário
+}
+
 
 void main() {
   // Configurando acessibilidade para toda a aplicação
   WidgetsFlutterBinding.ensureInitialized();
   runApp(IncluiAIApp());
 }
+
 
 class IncluiAIApp extends StatelessWidget {
   @override
@@ -77,6 +98,7 @@ class IncluiAIApp extends StatelessWidget {
   }
 }
 
+
 class IncluiAIHome extends StatefulWidget {
   @override
   State<IncluiAIHome> createState() => _IncluiAIHomeState();
@@ -110,7 +132,7 @@ class _IncluiAIHomeState extends State<IncluiAIHome> {
     _speech = stt.SpeechToText();
     _initTts();
     _iniciarLembretes();
-    
+    _initNotificacoes();    
     // Configurando TTS para melhor acessibilidade
     _configurarTTSAcessivel();
   }
@@ -129,15 +151,41 @@ class _IncluiAIHomeState extends State<IncluiAIHome> {
       _falarResposta('Aplicativo IncluiAI aberto. Toque na parte central da tela para digitar ou usar comando de voz.');
     });
   }
+  Future<void> _agendarNotificacao(String titulo, String corpo, int id, Duration intervalo) async {
+  await flutterLocalNotificationsPlugin.zonedSchedule(
+    id,
+    titulo,
+    corpo,
+    tz.TZDateTime.now(tz.local).add(intervalo),
+    const NotificationDetails(
+      android: AndroidNotificationDetails(
+        'canal_lembrete', // ID do canal
+        'Lembretes do IncluiAI',
+        channelDescription: 'Notificações para saúde e bem-estar',
+        importance: Importance.max,
+        priority: Priority.high,
+        playSound: true,
+      ),
+    ),
+    androidAllowWhileIdle: true,
+    uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+    matchDateTimeComponents: DateTimeComponents.time, // repete diariamente
+  );
+}
 
-  void _iniciarLembretes() {
-    _lembreteAgua = Timer.periodic(Duration(hours: 2), (_) {
-      _falarResposta('Hora de beber água! Manter-se hidratado é muito importante.');
-    });
-    _lembreteExercicio = Timer.periodic(Duration(hours: 4), (_) {
-      _falarResposta('Lembre-se de se alongar ou fazer um exercício leve.');
-    });
-  }
+
+ void _iniciarLembretes() {
+  _lembreteAgua = Timer.periodic(Duration(hours: 2), (_) {
+    _falarResposta('Hora de beber água! Manter-se hidratado é muito importante.');
+    _agendarNotificacao('Lembrete de Hidratação', 'Hora de beber água!', 1, Duration(hours: 2));
+  });
+
+  _lembreteExercicio = Timer.periodic(Duration(hours: 4), (_) {
+    _falarResposta('Lembre-se de se alongar ou fazer um exercício leve.');
+    _agendarNotificacao('Movimente-se!', 'Hora de se alongar ou fazer um exercício leve.', 2, Duration(hours: 4));
+  });
+}
 
   Future<void> _gerarDica() async {
     final texto = _controller.text.trim();
@@ -439,9 +487,9 @@ class _IncluiAIHomeState extends State<IncluiAIHome> {
                         ),
                       ),
                       ElevatedButton.icon(
-                        onPressed: () => _abrirMapaComBusca('ponto de abrigo perto de mim'),
+                        onPressed: () => _abrirMapaComBusca('ponto de abrigo sociais perto de mim'),
                         icon: const Icon(Icons.house_siding, color: Colors.white, size: 36), // Aumentado
-                        label: const Text('Abrigos', style: TextStyle(fontSize: 24)), // Aumentado
+                        label: const Text('Abrigos Sociais', style: TextStyle(fontSize: 24)), // Aumentado
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green[700], // Verde mais escuro para contraste
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16), // Maior área de toque
